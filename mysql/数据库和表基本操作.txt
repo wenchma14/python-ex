@@ -1,0 +1,520 @@
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.25-0ubuntu0.20.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use test;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> create table student_info (
+    -> number int;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> create table student_info ( 
+    -> number int,
+    -> name varchar(5),
+    -> sex enum('男','女'),
+    -> id_number char(18),
+    -> department varchar(20),
+    -> major varchar(30),
+    -> enrollment_time date
+    -> ) comment '学生基本信息表';
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> d
+    -> d
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'd
+d' at line 1
+mysql> create table stuudent_score (
+    -> number int,
+    -> subject varchar(30),
+    -> score tinyint
+    -> ) comment '学生成绩表'；
+    -> ) comment '学生成绩表';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '；
+) comment '学生成绩表'' at line 5
+mysql> create table stuudent_score ( number int, subject varchar(30), score tinyint ) comment '学生成绩表';
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| first_table    |
+| student_info   |
+| stuudent_score |
++----------------+
+3 rows in set (0.00 sec)
+
+mysql> desc student_info;
++-----------------+-------------------+------+-----+---------+-------+
+| Field           | Type              | Null | Key | Default | Extra |
++-----------------+-------------------+------+-----+---------+-------+
+| number          | int               | YES  |     | NULL    |       |
+| name            | varchar(5)        | YES  |     | NULL    |       |
+| sex             | enum('男','女')   | YES  |     | NULL    |       |
+| id_number       | char(18)          | YES  |     | NULL    |       |
+| department      | varchar(20)       | YES  |     | NULL    |       |
+| major           | varchar(30)       | YES  |     | NULL    |       |
+| enrollment_time | date              | YES  |     | NULL    |       |
++-----------------+-------------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> show create table student_score;
+ERROR 1146 (42S02): Table 'test.student_score' doesn't exist
+mysql> show create table stuudent_score;
++----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table          | Create Table                                                                                                                                                                                                                   |
++----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| stuudent_score | CREATE TABLE `stuudent_score` (
+  `number` int DEFAULT NULL,
+  `subject` varchar(30) DEFAULT NULL,
+  `score` tinyint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='学生成绩表'      |
++----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> drop table stuudent_score;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table student_score ( number int, subject varchar(30), score tinyint ) comment '学生
+成绩表';
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| first_table    |
+| student_info   |
+| student_score  |
++----------------+
+3 rows in set (0.01 sec)
+
+mysql> show create table student_score\G
+*************************** 1. row ***************************
+       Table: student_score
+Create Table: CREATE TABLE `student_score` (
+  `number` int DEFAULT NULL,
+  `subject` varchar(30) DEFAULT NULL,
+  `score` tinyint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='学生成绩表'
+1 row in set (0.01 sec)
+
+mysql> show tables from test;
++----------------+
+| Tables_in_test |
++----------------+
+| first_table    |
+| student_info   |
+| student_score  |
++----------------+
+3 rows in set (0.00 sec)
+
+mysql> show create table test.student_info\G
+*************************** 1. row ***************************
+       Table: student_info
+Create Table: CREATE TABLE `student_info` (
+  `number` int DEFAULT NULL,
+  `name` varchar(5) DEFAULT NULL,
+  `sex` enum('男','女') DEFAULT NULL,
+  `id_number` char(18) DEFAULT NULL,
+  `department` varchar(20) DEFAULT NULL,
+  `major` varchar(30) DEFAULT NULL,
+  `enrollment_time` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='学生基本信息表'
+1 row in set (0.00 sec)
+
+mysql> alter table first_table rename to first_table1;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> show table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| first_table1   |
+| student_info   |
+| student_score  |
++----------------+
+3 rows in set (0.00 sec)
+
+mysql> rename table first_table1 to first_table;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| first_table    |
+| student_info   |
+| student_score  |
++----------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table first_table add column third_column char(4);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| first_column  | int          | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table first_table add column fourth_column first;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'first' at line 1
+mysql> alter table first_table add column fourth_column char(4) first;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| fourth_column | char(4)      | YES  |     | NULL    |       |
+| first_column  | int          | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table first_table add column fifth_column after first_column;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'after first_column' at line 1
+mysql> alter table first_table add column fifth_column char(4) after first_column;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| fourth_column | char(4)      | YES  |     | NULL    |       |
+| first_column  | int          | YES  |     | NULL    |       |
+| fifth_column  | char(4)      | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> alter table first_table drop column fourth_column;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| first_column  | int          | YES  |     | NULL    |       |
+| fifth_column  | char(4)      | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table first_table modify fifth_column varchar(4);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| first_column  | int          | YES  |     | NULL    |       |
+| fifth_column  | varchar(4)   | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table first_table change fifth_table fifth_table1 char(4);
+ERROR 1054 (42S22): Unknown column 'fifth_table' in 'first_table'
+mysql> alter table first_table change fifth_column fifth_column1 char(4);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| first_column  | int          | YES  |     | NULL    |       |
+| fifth_column1 | char(4)      | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.25-0ubuntu0.20.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use test;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> create table student_info (
+    -> number int;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> create table student_info ( 
+    -> number int,
+    -> name varchar(5),
+    -> sex enum('男','女'),
+    -> id_number char(18),
+    -> department varchar(20),
+    -> major varchar(30),
+    -> enrollment_time date
+    -> ) comment '学生基本信息表';
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> d
+    -> d
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'd
+d' at line 1
+mysql> create table stuudent_score (
+    -> number int,
+    -> subject varchar(30),
+    -> score tinyint
+    -> ) comment '学生成绩表'；
+    -> ) comment '学生成绩表';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '；
+) comment '学生成绩表'' at line 5
+mysql> create table stuudent_score ( number int, subject varchar(30), score tinyint ) comment '学生成绩表';
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| first_table    |
+| student_info   |
+| stuudent_score |
++----------------+
+3 rows in set (0.00 sec)
+
+mysql> desc student_info;
++-----------------+-------------------+------+-----+---------+-------+
+| Field           | Type              | Null | Key | Default | Extra |
++-----------------+-------------------+------+-----+---------+-------+
+| number          | int               | YES  |     | NULL    |       |
+| name            | varchar(5)        | YES  |     | NULL    |       |
+| sex             | enum('男','女')   | YES  |     | NULL    |       |
+| id_number       | char(18)          | YES  |     | NULL    |       |
+| department      | varchar(20)       | YES  |     | NULL    |       |
+| major           | varchar(30)       | YES  |     | NULL    |       |
+| enrollment_time | date              | YES  |     | NULL    |       |
++-----------------+-------------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> show create table student_score;
+ERROR 1146 (42S02): Table 'test.student_score' doesn't exist
+mysql> show create table stuudent_score;
++----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table          | Create Table                                                                                                                                                                                                                   |
++----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| stuudent_score | CREATE TABLE `stuudent_score` (
+  `number` int DEFAULT NULL,
+  `subject` varchar(30) DEFAULT NULL,
+  `score` tinyint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='学生成绩表'      |
++----------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> drop table stuudent_score;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table student_score ( number int, subject varchar(30), score tinyint ) comment '学生
+成绩表';
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| first_table    |
+| student_info   |
+| student_score  |
++----------------+
+3 rows in set (0.01 sec)
+
+mysql> show create table student_score\G
+*************************** 1. row ***************************
+       Table: student_score
+Create Table: CREATE TABLE `student_score` (
+  `number` int DEFAULT NULL,
+  `subject` varchar(30) DEFAULT NULL,
+  `score` tinyint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='学生成绩表'
+1 row in set (0.01 sec)
+
+mysql> show tables from test;
++----------------+
+| Tables_in_test |
++----------------+
+| first_table    |
+| student_info   |
+| student_score  |
++----------------+
+3 rows in set (0.00 sec)
+
+mysql> show create table test.student_info\G
+*************************** 1. row ***************************
+       Table: student_info
+Create Table: CREATE TABLE `student_info` (
+  `number` int DEFAULT NULL,
+  `name` varchar(5) DEFAULT NULL,
+  `sex` enum('男','女') DEFAULT NULL,
+  `id_number` char(18) DEFAULT NULL,
+  `department` varchar(20) DEFAULT NULL,
+  `major` varchar(30) DEFAULT NULL,
+  `enrollment_time` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='学生基本信息表'
+1 row in set (0.00 sec)
+
+mysql> alter table first_table rename to first_table1;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> show table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| first_table1   |
+| student_info   |
+| student_score  |
++----------------+
+3 rows in set (0.00 sec)
+
+mysql> rename table first_table1 to first_table;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| first_table    |
+| student_info   |
+| student_score  |
++----------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table first_table add column third_column char(4);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| first_column  | int          | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table first_table add column fourth_column first;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'first' at line 1
+mysql> alter table first_table add column fourth_column char(4) first;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| fourth_column | char(4)      | YES  |     | NULL    |       |
+| first_column  | int          | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table first_table add column fifth_column after first_column;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'after first_column' at line 1
+mysql> alter table first_table add column fifth_column char(4) after first_column;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| fourth_column | char(4)      | YES  |     | NULL    |       |
+| first_column  | int          | YES  |     | NULL    |       |
+| fifth_column  | char(4)      | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> alter table first_table drop column fourth_column;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| first_column  | int          | YES  |     | NULL    |       |
+| fifth_column  | char(4)      | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table first_table modify fifth_column varchar(4);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| first_column  | int          | YES  |     | NULL    |       |
+| fifth_column  | varchar(4)   | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table first_table change fifth_table fifth_table1 char(4);
+ERROR 1054 (42S22): Unknown column 'fifth_table' in 'first_table'
+mysql> alter table first_table change fifth_column fifth_column1 char(4);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| first_column  | int          | YES  |     | NULL    |       |
+| fifth_column1 | char(4)      | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)

@@ -1,0 +1,100 @@
+mysql> SELECT s1.number, s1.name, s1.major, s2.subject, s2.score FROM student_info AS s1 INNER JOIN student_score AS s2 WHERE s1.number = s2.number AND s1.sex = '男';
++----------+-----------+--------------------------+-----------------------------+-------+
+| number   | name      | major                    | subject                     | score |
++----------+-----------+--------------------------+-----------------------------+-------+
+| 20180101 | 杜子腾    | 计算机科学与工程         | 母猪的产后护理              |    78 |
+| 20180101 | 杜子腾    | 计算机科学与工程         | 论萨达姆的战争准备          |    88 |
+| 20180103 | 范统      | 软件工程                 | 母猪的产后护理              |    59 |
+| 20180103 | 范统      | 软件工程                 | 论萨达姆的战争准备          |    61 |
++----------+-----------+--------------------------+-----------------------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE VIEW male_student_view AS SELECT s1.number, s1.name, s1.major, s2.subject, s2.score FROM student_info AS s1 INNER JOIN student_score AS s2 WHERE s1.number = s2.number AND s1.sex = '男';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SELECT * FROM male_student_view;
++----------+-----------+--------------------------+-----------------------------+-------+
+| number   | name      | major                    | subject                     | score |
++----------+-----------+--------------------------+-----------------------------+-------+
+| 20180101 | 杜子腾    | 计算机科学与工程         | 母猪的产后护理              |    78 |
+| 20180101 | 杜子腾    | 计算机科学与工程         | 论萨达姆的战争准备          |    88 |
+| 20180103 | 范统      | 软件工程                 | 母猪的产后护理              |    59 |
+| 20180103 | 范统      | 软件工程                 | 论萨达姆的战争准备          |    61 |
++----------+-----------+--------------------------+-----------------------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT subject, AVG(score) FROM student_info AS s1 INNER JOIN student_score AS s2 WHERE s1.number = s2.number AND s1.sex = '男' AND score > 60 GROUP BY subject HAVING AVG(score) > 75;
++-----------------------+------------+
+| subject               | AVG(score) |
++-----------------------+------------+
+| 母猪的产后护理        |    78.0000 |
++-----------------------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT subject, AVG(score) FROM male_student_view WHERE score > 60 GROUP BY subject HAVING AVG(score) > 75 LIMIT 1;
++-----------------------+------------+
+| subject               | AVG(score) |
++-----------------------+------------+
+| 母猪的产后护理        |    78.0000 |
++-----------------------+------------+
+1 row in set (0.01 sec)
+
+mysql> CREATE VIEW by_view AS SELECT number, name, score FROM male_student_view;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SELECT * FROM by_view;
++----------+-----------+-------+
+| number   | name      | score |
++----------+-----------+-------+
+| 20180101 | 杜子腾    |    78 |
+| 20180101 | 杜子腾    |    88 |
+| 20180103 | 范统      |    59 |
+| 20180103 | 范统      |    61 |
++----------+-----------+-------+
+4 rows in set (0.00 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_test    |
++-------------------+
+| by_view           |
+| first_table       |
+| male_student_view |
+| student_info      |
+| student_score     |
+| t1                |
+| t2                |
++-------------------+
+7 rows in set (0.00 sec)
+
+mysql> show create view by_view\G
+*************************** 1. row ***************************
+                View: by_view
+         Create View: CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `by_view` AS select `male_student_view`.`number` AS `number`,`male_student_view`.`name` AS `name`,`male_student_view`.`score` AS `score` from `male_student_view`
+character_set_client: utf8mb4
+collation_connection: utf8mb4_0900_ai_ci
+1 row in set (0.00 sec)
+
+mysql> desc by_view;
++--------+------------+------+-----+---------+-------+
+| Field  | Type       | Null | Key | Default | Extra |
++--------+------------+------+-----+---------+-------+
+| number | int        | NO   |     | NULL    |       |
+| name   | varchar(5) | YES  |     | NULL    |       |
+| score  | tinyint    | YES  |     | NULL    |       |
++--------+------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> drop view by_view;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT m1, n1 FROM t1 LIMIT 1 INTO @a, @b;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT @a, @b;
++------+------+
+| @a   | @b   |
++------+------+
+|    1 | a    |
++------+------+
+1 row in set (0.00 sec)

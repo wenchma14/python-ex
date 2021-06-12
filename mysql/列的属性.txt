@@ -1,0 +1,230 @@
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 12
+Server version: 8.0.25-0ubuntu0.20.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use test;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select * from first_table;
+Empty set (0.00 sec)
+
+mysql> insert into first_table(first_column,second_column) values(1,'aaa');
+ERROR 1054 (42S22): Unknown column 'second_column' in 'field list'
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| first_column  | int          | YES  |     | NULL    |       |
+| fifth_column1 | char(4)      | YES  |     | NULL    |       |
+| second_colunm | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table first_table change second_colunm second_column varchar(100);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| first_column  | int          | YES  |     | NULL    |       |
+| fifth_column1 | char(4)      | YES  |     | NULL    |       |
+| second_column | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into first_table(first_column,second_column) values(1,'aaa');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from first_table;
++--------------+---------------+---------------+--------------+
+| first_column | fifth_column1 | second_column | third_column |
++--------------+---------------+---------------+--------------+
+|            1 | NULL          | aaa           | NULL         |
++--------------+---------------+---------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> insert into first_table(first_column,second_column) values(2,'bbb'),(3,'ccc'),(4,'ddd');
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from first_table;
++--------------+---------------+---------------+--------------+
+| first_column | fifth_column1 | second_column | third_column |
++--------------+---------------+---------------+--------------+
+|            1 | NULL          | aaa           | NULL         |
+|            2 | NULL          | bbb           | NULL         |
+|            3 | NULL          | ccc           | NULL         |
+|            4 | NULL          | ddd           | NULL         |
++--------------+---------------+---------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> alter table first_table modify third_column char(4) default 'abc';
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| first_column  | int          | YES  |     | NULL    |       |
+| fifth_column1 | char(4)      | YES  |     | NULL    |       |
+| second_column | varchar(100) | YES  |     | NULL    |       |
+| third_column  | char(4)      | YES  |     | abc     |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> insert into first_table(first_column,second_column) values(5,'eee');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from first_table;
++--------------+---------------+---------------+--------------+
+| first_column | fifth_column1 | second_column | third_column |
++--------------+---------------+---------------+--------------+
+|            1 | NULL          | aaa           | NULL         |
+|            2 | NULL          | bbb           | NULL         |
+|            3 | NULL          | ccc           | NULL         |
+|            4 | NULL          | ddd           | NULL         |
+|            5 | NULL          | eee           | abc          |
++--------------+---------------+---------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table student_info modify number int primary key;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student_info;
++-----------------+-------------------+------+-----+---------+-------+
+| Field           | Type              | Null | Key | Default | Extra |
++-----------------+-------------------+------+-----+---------+-------+
+| number          | int               | NO   | PRI | NULL    |       |
+| name            | varchar(5)        | YES  |     | NULL    |       |
+| sex             | enum('男','女')   | YES  |     | NULL    |       |
+| id_number       | char(18)          | YES  |     | NULL    |       |
+| department      | varchar(20)       | YES  |     | NULL    |       |
+| major           | varchar(30)       | YES  |     | NULL    |       |
+| enrollment_time | date              | YES  |     | NULL    |       |
++-----------------+-------------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> alter table student_score add column primary key (number,subject);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'primary key (number,subject)' at line 1
+mysql> alter table student_score add primary key (number,subject);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student_score;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| number  | int         | NO   | PRI | NULL    |       |
+| subject | varchar(30) | NO   | PRI | NULL    |       |
+| score   | tinyint     | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table student_info modify id_number char(18) unique;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student_info;
++-----------------+-------------------+------+-----+---------+-------+
+| Field           | Type              | Null | Key | Default | Extra |
++-----------------+-------------------+------+-----+---------+-------+
+| number          | int               | NO   | PRI | NULL    |       |
+| name            | varchar(5)        | YES  |     | NULL    |       |
+| sex             | enum('男','女')   | YES  |     | NULL    |       |
+| id_number       | char(18)          | YES  | UNI | NULL    |       |
+| department      | varchar(20)       | YES  |     | NULL    |       |
+| major           | varchar(30)       | YES  |     | NULL    |       |
+| enrollment_time | date              | YES  |     | NULL    |       |
++-----------------+-------------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> drop table student_score;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table student_score (
+    -> number int,
+    -> subject varchar(30),
+    -> score tinyint,
+    -> primary key (number,subject),
+    -> constraint foreign key(number) references student_info(number)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> drop table first_table;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table first_table (
+    -> id int unsigned auto_increment primary key,
+    -> first_column int,
+    -> second_column varchar(4) default 'abcd'
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> insert into first_table(first_column) values(1),(2);
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc first_table;
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| id            | int unsigned | NO   | PRI | NULL    | auto_increment |
+| first_column  | int          | YES  |     | NULL    |                |
+| second_column | varchar(4)   | YES  |     | abcd    |                |
++---------------+--------------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+mysql> select * from first_table;
++----+--------------+---------------+
+| id | first_column | second_column |
++----+--------------+---------------+
+|  1 |            1 | abcd          |
+|  2 |            2 | abcd          |
++----+--------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> alter table first_table add column third_column int(5) unsigned zerofill;
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 2
+
+mysql> insert into first_table(first_column,third_column) values(3, 3),(4, 4);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from first_table;
++----+--------------+---------------+--------------+
+| id | first_column | second_column | third_column |
++----+--------------+---------------+--------------+
+|  1 |            1 | abcd          |         NULL |
+|  2 |            2 | abcd          |         NULL |
+|  3 |            3 | abcd          |        00003 |
+|  4 |            4 | abcd          |        00004 |
++----+--------------+---------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> desc first_table;
++---------------+--------------------------+------+-----+---------+----------------+
+| Field         | Type                     | Null | Key | Default | Extra          |
++---------------+--------------------------+------+-----+---------+----------------+
+| id            | int unsigned             | NO   | PRI | NULL    | auto_increment |
+| first_column  | int                      | YES  |     | NULL    |                |
+| second_column | varchar(4)               | YES  |     | abcd    |                |
+| third_column  | int(5) unsigned zerofill | YES  |     | NULL    |                |
++---------------+--------------------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
